@@ -1,0 +1,22 @@
+---
+const response = await fetch('https://www.dacgrupo.com/wp-json/wp/v2/pages/7303');
+console.log('Respuesta de la API:', response);
+const pageData = await response.json();
+console.log('Datos de la página:', pageData);
+// Cogemos el contenido sucio
+let rawContent = pageData.content.rendered;
+
+// LIMPIEZA: Eliminamos todo lo que esté entre corchetes [ ]
+// Esta expresión regular busca corchetes y los borra, dejando solo el texto y el HTML real
+const cleanContent = rawContent.replace(/\[\/?vc_[^\]]*\]/g, "");
+---
+
+<section class="py-20 bg-white">
+  <div class="max-w-300 mx-auto px-6">
+    
+    <div class="prose prose-slate max-w-none">
+      <article set:html={cleanContent} />
+    </div>
+
+  </div>
+</section>

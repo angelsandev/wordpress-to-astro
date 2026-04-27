@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "DAC Grupo - Consultoría y Servicios" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body class="bg-white text-slate-900 antialiased">
+		<Navbar />
+
+		<main>
+			<slot /> </main>
+
+		<footer class="bg-slate-900 text-white p-10 mt-20 text-center">
+			<p>&copy; {new Date().getFullYear()} DAC Grupo - Expertos en Eficiencia</p>
+		</footer>
+	</body>
+</html>

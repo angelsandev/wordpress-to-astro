@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Para que la API se vea bien */
+@layer components {
+  /* Esto arregla las 3 columnas de Misión, Visión, Valores */
+  .wp-grid-fix .vc_row {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .wp-grid-fix .vc_row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Forzamos que las imágenes de la API no se desparramen */
+  .wp-grid-fix img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}
