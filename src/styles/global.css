@@ -1,61 +1,73 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@layer base {
+@theme {
+  --font-montserrat: "Montserrat", sans-serif;
+  --color-dac-dark: #2c3e50;
+  --color-dac-gray: #555555;
+  --color-dac-red: #dd3333;
+}
 
-  /* Esto aplica estilos a todo el sitio respetando Tailwind */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply text-[#333333] leading-tight;
+@layer base {
+  body {
+    @apply font-montserrat antialiased bg-white text-[--color-dac-gray];
   }
-  p {
-      @apply text-base text-gray-600 leading-relaxed mb-6 text-left;
-    }
+  
 }
 
 @layer components {
-
-  /* 
-     Creamos una clase "contenedor" para el contenido de WordPress.
-     Usamos selectores para estilizar lo que hay DENTRO del HTML inyectado.
-  */
   .wp-content {
-    h1, h2 {
-      @apply text-3xl text-[#2c3e50] text-center mt-12 mb-6 leading-tight;
+
+    /* --- TÍTULOS Y TEXTOS --- */
+    h1, h2, h3 {
+      @apply font-montserrat text-center mt-12 mb-6 leading-tight;
+      /* Usamos color: var(...) para asegurar que Tailwind v4 lo mapee bien */
+      color: var(--color-dac-dark);
+      font-size: 32px;
     }
 
     /* --- PÁRRAFOS --- */
-    /* DAC usa 16px (text-base) y color #555555 */
     p {
-      @apply text-base text-gray-600 leading-relaxed mb-6 text-left;
+      @apply font-montserrat text-base leading-relaxed mb-6 text-left;
+      color: var(--color-dac-gray);
     }
 
-    /* --- LA LÍNEA SEPARADORA (sc_line) --- */
-    .sc_line, .rd_line_normal {
-      @apply mx-auto my-6 bg-black;
-      width: 300px; /* Ancho fijo como en el original */
-      height: 1px;
+    /* --- LAYOUT: IMAGEN IZQUIERDA / TEXTO DERECHA --- */
+    /* DAC usa vc_row como contenedor y vc_spanX para columnas */
+    .vc_row {
+      @apply grid grid-cols-1 md:grid-cols-12 gap-8 my-12 items-center w-full;
     }
 
-    /* Estilo para el bloque de imagen y texto de Gutenberg */
-    .wp-block-media-text {
-      @apply grid grid-cols-1 md:grid-cols-2 gap-12 my-16 items-center;
+    /* Columna pequeña (Imagen): Ocupa 4 de 12 columnas */
+    .vc_span4 {
+      @apply md:col-span-4 flex justify-center;
 
-      &__media img {
-        @apply w-full max-w-150 h-auto rounded-xl shadow-2xl mx-auto;
+      img {
+        @apply w-full h-auto rounded-lg;
       }
     }
 
-    /* Estilo para las 3 columnas con 2 iconos al medio */
+    /* Columna grande (Texto): Ocupa 8 de 12 columnas */
+    .vc_span8 {
+      @apply md:col-span-8 text-left;
+    }
+
+    /* Soporte para el bloque Media-Text de Gutenberg */
+    .wp-block-media-text {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-10 my-12 items-center;
+    }
+
+    /* --- LÍNEA DE DAC --- */
+    .sc_line,
+    .rd_line_normal {
+      @apply mx-auto my-6 bg-black w-75 h-px;
+    }
+
     .wp-block-columns {
       /* gap-y-10 para separación vertical en móvil */
       /* md:gap-x-24 para separar mucho las dos columnas en escritorio */
       @apply flex flex-row flex-wrap items-center justify-center gap-y-10 my-8 w-full overflow-hidden;
-      @apply md:gap-x-8; 
+      @apply md:gap-x-12;
     }
 
     .wp-block-column {
@@ -65,7 +77,7 @@
     /* --- ICONO CIRCULAR --- */
     svg {
       /* Cambiamos rounded-lg por rounded-full para que sea un círculo */
-      @apply bg-[#dd3333] text-white rounded-full p-2.5 w-11 h-11 shrink-0;
+      @apply bg-dac-red text-white rounded-full p-2.5 w-11 h-11 shrink-0;
       /* Aseguramos que el SVG interno esté centrado */
       display: block;
     }
@@ -95,14 +107,5 @@
 
 
 
-
-
-
   }
-
-
-
-
-
-
 }

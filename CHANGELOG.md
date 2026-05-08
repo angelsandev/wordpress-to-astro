@@ -1,5 +1,10 @@
 # Wordpress to ASTRO: transformar web en Wordpress a Framework Astro conumiendo API Wordpress
 
+### [V0.0.3] Mejoras tipografías - 2026-5-08
+- **Pruebas:** ✅ Todo ok.  
+- **Pruebas:** ✅ Añadir tipografía y estilos textos.
+- **Pruebas:** ✅ Respetar secciones de imagen con texto y el de los iconos SVG correcto.
+
 ### [V0.0.2] Construir nuevo Wordpress - 2026-4-27
 - **Pruebas:** ✅ Todo ok.  
 - **Pruebas:** ✅ Construir nuevo wordpress, hacer página desde cero. Consumir nueva API con éxito.
