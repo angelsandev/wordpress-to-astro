@@ -1,27 +1,108 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Para que la API se vea bien */
-@layer components {
-  /* Esto arregla las 3 columnas de Misión, Visión, Valores */
-  .wp-grid-fix .vc_row {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-  }
+@layer base {
 
-  @media (min-width: 768px) {
-    .wp-grid-fix .vc_row {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Esto aplica estilos a todo el sitio respetando Tailwind */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-[#333333] leading-tight;
+  }
+  p {
+      @apply text-base text-gray-600 leading-relaxed mb-6 text-left;
     }
+}
+
+@layer components {
+
+  /* 
+     Creamos una clase "contenedor" para el contenido de WordPress.
+     Usamos selectores para estilizar lo que hay DENTRO del HTML inyectado.
+  */
+  .wp-content {
+    h1, h2 {
+      @apply text-3xl text-[#2c3e50] text-center mt-12 mb-6 leading-tight;
+    }
+
+    /* --- PÁRRAFOS --- */
+    /* DAC usa 16px (text-base) y color #555555 */
+    p {
+      @apply text-base text-gray-600 leading-relaxed mb-6 text-left;
+    }
+
+    /* --- LA LÍNEA SEPARADORA (sc_line) --- */
+    .sc_line, .rd_line_normal {
+      @apply mx-auto my-6 bg-black;
+      width: 300px; /* Ancho fijo como en el original */
+      height: 1px;
+    }
+
+    /* Estilo para el bloque de imagen y texto de Gutenberg */
+    .wp-block-media-text {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-12 my-16 items-center;
+
+      &__media img {
+        @apply w-full max-w-150 h-auto rounded-xl shadow-2xl mx-auto;
+      }
+    }
+
+    /* Estilo para las 3 columnas con 2 iconos al medio */
+    .wp-block-columns {
+      /* gap-y-10 para separación vertical en móvil */
+      /* md:gap-x-24 para separar mucho las dos columnas en escritorio */
+      @apply flex flex-row flex-wrap items-center justify-center gap-y-10 my-8 w-full overflow-hidden;
+      @apply md:gap-x-8; 
+    }
+
+    .wp-block-column {
+      @apply flex flex-row items-center gap-4 m-0 w-full md:w-auto md:shrink-0;
+    }
+
+    /* --- ICONO CIRCULAR --- */
+    svg {
+      /* Cambiamos rounded-lg por rounded-full para que sea un círculo */
+      @apply bg-[#dd3333] text-white rounded-full p-2.5 w-11 h-11 shrink-0;
+      /* Aseguramos que el SVG interno esté centrado */
+      display: block;
+    }
+
+    /* --- AJUSTES DE TEXTO Y ALINEACIÓN --- */
+    .wp-block-column p {
+      @apply m-0 text-lg leading-tight;
+      @apply max-w-[70%] md:max-w-87.5;
+      overflow-wrap: break-word;
+    }
+
+    .wp-block-column:first-child {
+      @apply justify-end text-right;
+    }
+
+    .wp-block-column:last-child {
+      @apply justify-start text-left;
+    }
+
+    .wp-block-column:first-child p {
+      @apply text-right;
+    }
+
+    .wp-block-column:last-child p {
+      @apply text-left;
+    }
+
+
+
+
+
+
   }
 
-  /* Forzamos que las imágenes de la API no se desparramen */
-  .wp-grid-fix img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
+
+
+
+
+
 }

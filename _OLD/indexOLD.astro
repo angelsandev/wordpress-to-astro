@@ -1,0 +1,83 @@
+---
+import Layout from "../layouts/Layout.astro";
+//import AboutUs from '../components/AboutUs.astro';
+import { getWordPressContent } from "../lib/wpData";
+const content = await getWordPressContent();
+console.log("Secciones totales encontradas:", Object.keys(content).length);
+console.log("¿Existe contenido en About?:", content.about);
+console.log("¿Hay URL de imagen?:", content.aboutImg);
+---
+
+<Layout title="DAC Grupo | Inicio">
+  <section class="container mx-auto px-4 py-20 text-center">
+    <h1 class="text-5xl font-extrabold tracking-tight mb-6">
+      Bienvenidos a la nueva web de <span class="text-dac-blue">DAC</span>
+    </h1>
+    <p class="text-lg text-slate-600 max-w-2xl mx-auto">Migrando de WordPress a Astro para conseguir la máxima velocidad de carga.</p>
+  </section>
+  <section class="max-w-6xl mx-auto px-4 space-y-12">
+    
+    {/* SECCIÓN 1: ABOUT (Imagen Izquierda) */}
+    {content.about && (
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        {content.aboutImg && (
+          <div class="flex-1">
+            <img src={content.aboutImg} alt="Oficinas DAC" class="rounded-2xl shadow-2xl w-full h-auto object-cover" />
+          </div>
+        )}
+        <div class="flex-1 prose prose-lg max-w-none text-left">
+          <article set:html={content.about} />
+          {content.about2 && <div class="mt-4" set:html={content.about2} />}
+        </div>
+      </div>
+    )}
+
+    {
+      /* 
+    <article set:html={content.about} />
+    <article set:html={content.about2} />
+*/
+    }
+    <div class="wp-grid-fix border-y py-10" set:html={content.misiones} />
+
+    <article set:html={content.target} />
+    <article set:html={content.tech} />
+    <article set:html={content.projects} />
+    <article set:html={content.training} />
+    <article set:html={content.stock} />
+    <article set:html={content.postVenta} />
+    <article set:html={content.marcas} />
+    <article set:html={content.catalogo} />
+    <article set:html={content.servicios} />
+  </section>
+
+  <!--     <AboutUs />    -->
+</Layout>
+<style is:global>
+  /* Buscamos el contenedor que tiene la clase de Visual Composer 
+     y lo convertimos en un Grid de 3 columnas para Misión/Visión/Valores
+  */
+  .wp-grid-fix .vc_row-fluid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .wp-grid-fix .vc_row-fluid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Estilo para los títulos que acabamos de rescatar */
+  article h2,
+  .wp-grid-fix h2 {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700;
+    color: #1e40af; /* Un azul corporativo */
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+</style>
