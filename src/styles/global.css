@@ -107,5 +107,38 @@
 
 
 
+/* --- GALERÍA DE 6 IMÁGENES EN LÍNEA --- */
+    .wp-block-gallery {
+      /* En móvil: una debajo de otra y centradas */
+      @apply flex flex-col items-center gap-4 my-10 list-none p-0;
+      /* En escritorio: las 6 en la misma horizontal */
+      @apply md:flex-row md:flex-nowrap md:justify-between;
+    }
+
+    .wp-block-image, .blocks-gallery-item {
+      /* m-0 para quitar márgenes de WordPress */
+      /* md:flex-1 para que en PC se repartan el ancho */
+      @apply m-0 md:flex-1;
+      
+      /* EN MÓVIL: No permitimos que la imagen sea más grande que su tamaño real */
+      /* Pero si es más grande que la pantalla, se ajusta al ancho del móvil */
+      @apply w-auto max-w-full;
+    }
+
+    .wp-block-gallery img {
+      @apply h-auto object-contain rounded-lg shadow-sm block mx-auto;
+      
+      /* Si quieres un tamaño fijo máximo en móvil => max-w-[250px] aquí */
+      @apply max-w-70 md:max-w-full;
+    }
+
+    /* --- ELIMINAR TEXTOS DE LAS IMÁGENES (CAPTIONS) --- */
+    figcaption, .wp-element-caption, .gallery-caption {
+      display: none !important;
+    }
+
+
+
+
   }
 }

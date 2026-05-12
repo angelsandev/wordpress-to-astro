@@ -1,5 +1,9 @@
 # Wordpress to ASTRO: transformar web en Wordpress a Framework Astro conumiendo API Wordpress
 
+### [V0.0.5] Adaptar galería de imágenes - 2026-5-12
+- **Pruebas:** ✅ Todo ok. 
+- **Pruebas:** ✅ Adaptar galería de imágenes, responsive incluido.
+
 ### [V0.0.4] Mejoras estilos columnas - 2026-5-12
 - **Pruebas:** ✅ Todo ok. 
 - **Pruebas:** ✅ Mejoras estilos CSS Tailwind para la sección de columnas de `Nuestros Servicios`.
