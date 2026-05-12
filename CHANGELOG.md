@@ -1,5 +1,9 @@
 # Wordpress to ASTRO: transformar web en Wordpress a Framework Astro conumiendo API Wordpress
 
+### [V0.0.6] Imágenes responsive arriba y texto abajo - 2026-5-12
+- **Pruebas:** ✅ Todo ok. 
+- **Pruebas:** ✅ En pantallas pequeñas, la imágen está arriba centrada y texto abajo. Pantallas grandes, vuelve imágen izquierda y texto derecha.
+
 ### [V0.0.5] Adaptar galería de imágenes - 2026-5-12
 - **Pruebas:** ✅ Todo ok. 
 - **Pruebas:** ✅ Adaptar galería de imágenes, responsive incluido.

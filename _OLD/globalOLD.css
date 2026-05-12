@@ -10,59 +10,184 @@
 
 @layer base {
   body {
-    @apply font-montserrat antialiased bg-white;
+    @apply font-montserrat antialiased bg-white text-[--color-dac-gray];
   }
+
 }
 
 @layer components {
   .wp-content {
-    /* --- H2: Montserrat, 32px (#2c3e50) --- */
-    h2 {
-      @apply font-montserrat text-[32px] text-[--color-dac-dark] font-bold text-center mt-12 mb-6 leading-tight;
+
+    /* --- TÍTULOS Y TEXTOS --- */
+    h1,
+    h2,
+    h3 {
+      @apply font-montserrat text-center mt-12 mb-6 leading-tight;
+      /* Usamos color: var(...) para asegurar que Tailwind v4 lo mapee bien */
+      color: var(--color-dac-dark);
+      font-size: 24px;
     }
 
-    /* --- P: Montserrat, 16px (#555555) --- */
+    /* --- PÁRRAFOS --- */
     p {
-      @apply font-montserrat text-base text-[--color-dac-gray] leading-relaxed mb-6 text-left;
+      @apply font-montserrat text-base leading-relaxed mb-4 text-left;
+      color: var(--color-dac-gray);
     }
 
-    /* --- ICONOS Y COLUMNAS --- */
+    /* --- LAYOUT: IMAGEN IZQUIERDA / TEXTO DERECHA --- */
+    /* DAC usa vc_row como contenedor y vc_spanX para columnas */
+
+
+    /* Aseguramos que sea un flex-col en móvil y cambie a grid en escritorio */
+
+    /* 1. Reset del contenedor principal */
+div.wp-block-media-text {
+  display: flex !important; /* Cambiamos de grid a flex para control total */
+  flex-direction: column !important; /* Por defecto uno debajo de otro */
+  grid-template-columns: 100% !important; /* Anulamos el 40% de WordPress */
+  gap: 2rem !important;
+  margin: 3rem 0 !important;
+}
+
+/* 2. Centramos el contenedor de la imagen */
+figure.wp-block-media-text__media {
+  margin: 0 auto !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* 3. Ajustamos la imagen para que esté centrada y no se desborde */
+figure.wp-block-media-text__media img {
+  width: auto !important;
+  max-width: 320px !important; /* Tamaño móvil */
+  height: auto !important;
+  display: block !important;
+}
+
+/* 4. Centramos el texto en móviles */
+div.wp-block-media-text__content {
+  text-align: center !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+
+/* --- CONFIGURACIÓN PARA ESCRITORIO --- */
+@media screen and (min-width: 768px) {
+  
+  /* Volvemos al diseño horizontal */
+  div.wp-block-media-text {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  /* La imagen vuelve a su espacio (40%) y se alinea a la izquierda */
+  figure.wp-block-media-text__media {
+    width: 40% !important;
+    flex: 0 0 40% !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+  }
+
+  /* La imagen puede ser más grande en PC */
+  figure.wp-block-media-text__media img {
+    max-width: 100% !important;
+  }
+
+  /* El texto vuelve a la derecha y alineado a la izquierda */
+  div.wp-block-media-text__content {
+    width: 60% !important;
+    flex: 0 0 60% !important;
+    text-align: left !important;
+    padding-left: 2rem !important;
+  }
+}
+
+    /* --- LÍNEA DE DAC --- */
+    .sc_line,
+    .rd_line_normal {
+      @apply mx-auto my-6 bg-black w-75 h-px;
+    }
+
     .wp-block-columns {
-      @apply flex flex-row flex-wrap items-center justify-center my-8 w-full overflow-hidden gap-y-10 md:gap-x-8;
+      /* gap-y-10 para separación vertical en móvil */
+      /* md:gap-x-24 para separar mucho las dos columnas en escritorio */
+      @apply flex flex-row flex-wrap items-center justify-center gap-y-10 my-8 w-full overflow-hidden;
+      @apply md:gap-x-12;
     }
 
     .wp-block-column {
       @apply flex flex-row items-center gap-4 m-0 w-full md:w-auto md:shrink-0;
-      
-      /* Reparación de los iconos SVG */
-      svg {
-        /* size-11 define width y height (44px) */
-        /* p-2.5 es el padding interno */
-        @apply bg-[--color-dac-red] text-white rounded-full size-11 p-[10px] shrink-0 block;
-        /* Forzamos que el contenido del SVG herede el color blanco */
-        @apply fill-current stroke-current; 
-      }
-
-      /* Texto de la columna */
-      p {
-        @apply m-0 text-base text-[--color-dac-gray] leading-tight break-words max-w-[70%] md:max-w-[350px];
-      }
-      
-      /* Alineaciones */
-      &:first-child { 
-        @apply justify-end text-right;
-        p { @apply text-right; }
-      }
-      
-      &:last-child { 
-        @apply justify-start text-left;
-        p { @apply text-left; }
-      }
     }
 
-    /* --- LÍNEA SEPARADORA DE DAC --- */
-    .sc_line, .rd_line_normal {
-      @apply mx-auto my-4 bg-black w-[300px] h-[1px];
+    /* --- ICONO CIRCULAR --- */
+    svg {
+      /* Cambiamos rounded-lg por rounded-full para que sea un círculo */
+      @apply bg-dac-red text-white rounded-full p-2.5 w-11 h-11 shrink-0;
+      /* Aseguramos que el SVG interno esté centrado */
+      display: block;
     }
+
+    /* --- AJUSTES DE TEXTO Y ALINEACIÓN --- */
+    .wp-block-column p {
+      @apply m-0 text-lg leading-tight;
+      @apply max-w-[70%] md:max-w-87.5;
+      overflow-wrap: break-word;
+    }
+
+    .wp-block-column:first-child {
+      @apply justify-end text-right;
+    }
+
+    .wp-block-column:last-child {
+      @apply justify-start text-left;
+    }
+
+    .wp-block-column:first-child p {
+      @apply text-right;
+    }
+
+    .wp-block-column:last-child p {
+      @apply text-left;
+    }
+
+
+
+    /* --- GALERÍA DE 6 IMÁGENES EN LÍNEA --- */
+    .wp-block-gallery {
+      /* En móvil: una debajo de otra y centradas */
+      @apply flex flex-col items-center gap-4 my-10 list-none p-0;
+      /* En escritorio: las 6 en la misma horizontal */
+      @apply md:flex-row md:flex-nowrap md:justify-between;
+    }
+
+    .wp-block-image,
+    .blocks-gallery-item {
+      /* m-0 para quitar márgenes de WordPress */
+      /* md:flex-1 para que en PC se repartan el ancho */
+      @apply m-0 md:flex-1;
+
+      /* EN MÓVIL: No permitimos que la imagen sea más grande que su tamaño real */
+      /* Pero si es más grande que la pantalla, se ajusta al ancho del móvil */
+      @apply w-auto max-w-full;
+    }
+
+    .wp-block-gallery img {
+      @apply h-auto object-contain rounded-lg shadow-sm block mx-auto;
+
+      /* Si quieres un tamaño fijo máximo en móvil => max-w-[250px] aquí */
+      @apply max-w-70 md:max-w-full;
+    }
+
+    /* --- ELIMINAR TEXTOS DE LAS IMÁGENES (CAPTIONS) --- */
+    figcaption,
+    .wp-element-caption,
+    .gallery-caption {
+      display: none !important;
+    }
+
+
+
+
   }
 }

@@ -12,15 +12,17 @@
   body {
     @apply font-montserrat antialiased bg-white text-[--color-dac-gray];
   }
-  
+
 }
 
 @layer components {
   .wp-content {
 
     /* --- TÍTULOS Y TEXTOS --- */
-    h1, h2, h3 {
-      @apply font-montserrat text-center  mt-12 mb-6 leading-tight;
+    h1,
+    h2,
+    h3 {
+      @apply font-montserrat text-center mt-12 mb-6 leading-tight;
       /* Usamos color: var(...) para asegurar que Tailwind v4 lo mapee bien */
       color: var(--color-dac-dark);
       font-size: 24px;
@@ -28,34 +30,96 @@
 
     /* --- PÁRRAFOS --- */
     p {
-      @apply font-montserrat text-base leading-relaxed mb-6 text-left;
+      @apply font-montserrat text-base leading-relaxed mb-4 text-left;
       color: var(--color-dac-gray);
     }
 
     /* --- LAYOUT: IMAGEN IZQUIERDA / TEXTO DERECHA --- */
     /* DAC usa vc_row como contenedor y vc_spanX para columnas */
-    .vc_row {
-      @apply grid grid-cols-1 md:grid-cols-12 gap-8 my-12 items-center w-full;
-    }
 
-    /* Columna pequeña (Imagen): Ocupa 4 de 12 columnas */
-    .vc_span4 {
-      @apply md:col-span-4 flex justify-center;
 
-      img {
-        @apply w-full h-auto rounded-lg;
-      }
-    }
+    /* Aseguramos que sea un flex-col en móvil y cambie a grid en escritorio */
 
-    /* Columna grande (Texto): Ocupa 8 de 12 columnas */
-    .vc_span8 {
-      @apply md:col-span-8 text-left;
-    }
+    /* 1. Reset del contenedor principal */
+div.wp-block-media-text {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: 100% !important;
+  /* Espaciado vertical entre bloques en DAC es generoso */
+  margin-top: 3.5rem !important;
+  margin-bottom: 3.5rem !important;
+  gap: 1.5rem !important;
+}
 
-    /* Soporte para el bloque Media-Text de Gutenberg */
-    .wp-block-media-text {
-      @apply grid grid-cols-1 md:grid-cols-2 gap-10 my-12 items-center;
-    }
+/* 1. Ajuste del contenedor de imagen */
+figure.wp-block-media-text__media {
+  margin: 0 auto !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 10% !important; /* Margen lateral en móvil para que la foto no pegue al borde */
+}
+
+/* 2. Tamaño de la imagen (más natural) */
+figure.wp-block-media-text__media img {
+  width: 100% !important;
+  max-width: 480px !important; /* Límite para que no se vea gigante en tablets */
+  height: auto !important;
+  display: block !important;
+  border-radius: 0px !important; /* DAC no suele usar bordes redondeados en estas fotos */
+}
+
+/* 3. Contenedor de Texto */
+div.wp-block-media-text__content {
+  text-align: left !important; /* DAC mantiene el texto a la izquierda incluso en móvil */
+  width: 100% !important;
+  padding: 0 5% !important; /* Alineado con los márgenes de la web */
+}
+
+/* 4. Ajuste de los párrafos para igualar a DAC */
+div.wp-block-media-text__content p {
+  /*font-family: "Open Sans", sans-serif !important; /* DAC usa Open Sans */
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: #555555 !important;
+  margin-bottom: 1.2rem !important;
+}
+
+/* --- CONFIGURACIÓN ESCRITORIO (768px+) --- */
+@media screen and (min-width: 768px) {
+  div.wp-block-media-text {
+    flex-direction: row !important;
+    align-items: flex-start !important; /* Alineado arriba como en DAC */
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Proporción 40% exacta */
+  figure.wp-block-media-text__media {
+    width: 40% !important;
+    flex: 0 0 40% !important;
+    padding: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  figure.wp-block-media-text__media img {
+    max-width: 100% !important;
+    padding-right: 30px !important; /* Separación interna */
+  }
+
+  /* Proporción 60% exacta */
+  div.wp-block-media-text__content {
+    width: 60% !important;
+    flex: 0 0 60% !important;
+    padding: 0 !important;
+    text-align: left !important;
+  }
+  
+  /* El primer párrafo no debe tener margen superior */
+  div.wp-block-media-text__content p:first-child {
+    margin-top: 0 !important;
+  }
+}
 
     /* --- LÍNEA DE DAC --- */
     .sc_line,
@@ -107,7 +171,7 @@
 
 
 
-/* --- GALERÍA DE 6 IMÁGENES EN LÍNEA --- */
+    /* --- GALERÍA DE 6 IMÁGENES EN LÍNEA --- */
     .wp-block-gallery {
       /* En móvil: una debajo de otra y centradas */
       @apply flex flex-col items-center gap-4 my-10 list-none p-0;
@@ -115,11 +179,12 @@
       @apply md:flex-row md:flex-nowrap md:justify-between;
     }
 
-    .wp-block-image, .blocks-gallery-item {
+    .wp-block-image,
+    .blocks-gallery-item {
       /* m-0 para quitar márgenes de WordPress */
       /* md:flex-1 para que en PC se repartan el ancho */
       @apply m-0 md:flex-1;
-      
+
       /* EN MÓVIL: No permitimos que la imagen sea más grande que su tamaño real */
       /* Pero si es más grande que la pantalla, se ajusta al ancho del móvil */
       @apply w-auto max-w-full;
@@ -127,13 +192,15 @@
 
     .wp-block-gallery img {
       @apply h-auto object-contain rounded-lg shadow-sm block mx-auto;
-      
+
       /* Si quieres un tamaño fijo máximo en móvil => max-w-[250px] aquí */
       @apply max-w-70 md:max-w-full;
     }
 
     /* --- ELIMINAR TEXTOS DE LAS IMÁGENES (CAPTIONS) --- */
-    figcaption, .wp-element-caption, .gallery-caption {
+    figcaption,
+    .wp-element-caption,
+    .gallery-caption {
       display: none !important;
     }
 
